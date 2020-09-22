@@ -1,0 +1,56 @@
+<form class="container" [formGroup]="requestForm" *ngIf="!registered">
+<h2>Request an invite</h2>
+
+<hr>
+<div class="inputs form-group" [class.cross-validation-error]="requestForm.errors?.emailNotConfirmed&& (requestForm.touched || requestForm.dirty)">
+    <div *ngIf="requestForm.errors?.emailNotConfirmed &&(emailConfirm.touched || emailConfirm.dirty)" class="alert alert-danger">
+        Email address and Confirm Email address should match.
+    </div>
+    <input class="input form-control" type='text' formControlName="name" placeholder="Full Name">
+    <div *ngIf="name.invalid && (name.dirty || name.touched)"
+    class="alert alert-danger">
+
+    <div *ngIf="name.errors.required">
+        Name is required.
+    </div>
+
+    <div *ngIf="name.errors.minlength">
+        Name must be at least 3 characters long.
+    </div>
+    </div>
+    <input class="input form-control" type='text' formControlName="email" placeholder="Email">
+    <div *ngIf="email.invalid && (email.dirty || email.touched)"
+    class="alert alert-danger">
+    <div *ngIf="email.errors.required">
+        Email is required.
+    </div>
+    <div *ngIf="email.errors.pattern">
+        Please enter a valid email address.
+    </div>
+    </div>
+    <input class="input form-control" type='text' formControlName="emailConfirm" placeholder="Confirm email">
+    <div *ngIf="emailConfirm.invalid && (emailConfirm.dirty || emailConfirm.touched)"
+    class="alert alert-danger">
+    <div *ngIf="emailConfirm.errors.required">
+        Confirm email is required.
+    </div>
+    <div *ngIf="emailConfirm.errors.pattern">
+        Please enter a valid email address.
+    </div>
+    </div>
+    <!-- [disabled]="!requestForm.valid -->
+    <button class='sendButton' (click)="onSubmit()" [disabled]="!requestForm.valid||loading">
+        <span *ngIf="!loading">send</span>
+        <span *ngIf="loading">Sending, please wait...</span>
+    </button>
+    <p class="errorMessage">{{message}}</p>
+</div>
+<button (click)="closeDialog()">close</button>
+</form>
+<div class="container" *ngIf="registered">
+    <h2>All done!</h2>
+    <hr>
+    <p class="message">You will be one of the first to experience</p>
+    <p class="message">Brocoli & Co. when we launch.</p>
+    <button class="okButton" (click)="closeDialog()">OK</button>
+</div>
